@@ -1,6 +1,7 @@
 {
-    "/api/**": {
+    "/api": {
         "target": "https://sla-api.alejogiraldo.dev/",
-        "secure": false
+        "secure": true,
+        "changeOrigin": true
     }
 }
