@@ -2,13 +2,8 @@ import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
-  Validators,
-  AbstractControl,
-  ValidationErrors,
-  ValidatorFn
+  Validators
 } from '@angular/forms'
-
-import { RegisterUser } from '../../model/register-user.model';
 
 @Component({
   selector: 'app-login',
@@ -20,43 +15,19 @@ export class LoginComponent {
 
   form: FormGroup;
 
-  userData: RegisterUser | null = null;
-
   constructor(private fb: FormBuilder) {
-    this.form = this.fb.group(
-      {
-        name: ['', [Validators.required, Validators.minLength(3)]],
-        email: ['', [Validators.required, Validators.email]],
-        userName: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+$')]],
-        password: ['', [Validators.required, Validators.minLength(8)]],
-        confirmPassword: ['', [Validators.required]],
-        age: [null, [Validators.required, Validators.min(15), Validators.max(90)]],
-        check: ['', [Validators.requiredTrue]]
-      },
-      {
-        validators: this.passwordMatchValidator()
-      }
-    );
-  }
 
-  passwordMatchValidator(): ValidatorFn {
+    this.form = this.fb.group({
+      email: ['', [
+        Validators.required,
+        Validators.email
+      ]],
 
-    return (form: AbstractControl): ValidationErrors | null => {
-
-      const password = form.get('password');
-      const confirmPassword = form.get('confirmPassword');
-
-      if (!password || !confirmPassword) {
-        return null;
-      }
-
-      if (password.value !== confirmPassword.value) {
-        return { confirmPassword: true };
-      }
-
-      return null;
-
-    };
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8)
+      ]]
+    });
 
   }
 
@@ -68,32 +39,21 @@ export class LoginComponent {
       return false;
     }
 
-    if (
-      controlName === 'confirmPassword' &&
-      errorCode === 'confirmPassword'
-    ) {
-
-      return !!this.form.errors?.['confirmPassword']
-            && control.touched;
-
-    }
-
     return control.hasError(errorCode) && control.touched;
-
   }
 
-  onClick(): void {
+  onSubmit(): void {
 
     if (this.form.valid) {
 
-      this.userData = {
-        name: this.form.value.name!,
-        email: this.form.value.email!,
-        userName: this.form.value.userName!,
-        age: this.form.value.age!
-      };
+      const email = this.form.value.email;
+      const password = this.form.value.password;
 
-      console.log(this.userData);
+      console.log('Correo:', email);
+      console.log('Contraseña:', password);
+
+      // Aquí posteriormente puedes realizar
+      // la autenticación contra tu backend.
 
     } else {
 
@@ -102,7 +62,6 @@ export class LoginComponent {
     }
 
   }
-    /*onClick() {
-  console.log('Se hizo clic');
-  }*/
+
 }
+
