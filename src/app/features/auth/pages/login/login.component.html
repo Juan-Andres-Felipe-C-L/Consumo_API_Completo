@@ -1,1 +1,133 @@
-<p>login works!</p>
+<div class="content">
+
+  <div class="summary-card" *ngIf="userData">
+
+    <h2>Información registrada</h2>
+
+    <p><strong>Nombre:</strong> {{ userData.name }}</p>
+
+    <p><strong>Correo:</strong> {{ userData.email }}</p>
+
+    <p><strong>Usuario:</strong> {{ userData.userName }}</p>
+
+    <p><strong>Edad:</strong> {{ userData.age }}</p>
+
+  </div>
+
+  <div class="container">
+
+    <div class="card">
+        <h2>Registro de usuario</h2>
+        <p class="subtitle">Por favor, registre su información:</p>
+
+        <form [formGroup]="form">
+            <div class="form-group">
+                <label for="name">Nombre completo:</label>
+
+                <input formControlName="name" id="name" type="text" placeholder="Escriba aquí su nombre"/>
+
+                <small class="error" *ngIf="isInvalid('name', 'required')">
+                    Debe de escribir su nombre, es obligatorio.
+                </small>
+
+                <small class="error" *ngIf="isInvalid('name', 'minlength')">
+                    El nombre debe tener como mínimo 3 letras.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Correo electrónico:</label>
+
+                <input formControlName="email" id="email" type="email" placeholder="Ej. usuario@ejemplo.com"/>
+
+                <small class="error" *ngIf="isInvalid('email', 'required')">
+                    Usuario, debe de ingresar un correo.
+                </small>
+
+                <small class="error" *ngIf="isInvalid('email', 'email')">
+                    Ingrese un correo electrónico válido. 
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="userName">Nombre de usuario:</label>
+
+                <input formControlName="userName" id="userName" type="text" placeholder="Ej. Sr_Fel1p3"/>
+
+                <small class="error" *ngIf="isInvalid('userName', 'required')">
+                    Es obligatorio elegir un nombre de usuario.
+                </small>
+
+                <small class="error" *ngIf="isInvalid('userName', 'pattern')">
+                    El nombre de usuario debe tener: Números, letras y guion bajo.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+
+                <input formControlName="password" id="password" type="password" placeholder="••••••••">
+
+                <small class="error" *ngIf="isInvalid('password', 'required')">
+                    Es obligatorio escibir una contraseña.
+                </small>
+
+                <small class="error" *ngIf="isInvalid('password', 'minlength')">
+                    La contraseña debe tener 8 caracteres como mínimo.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar contraseña:</label>
+
+                <input formControlName="confirmPassword" id="confirmPassword" type="password" placeholder="••••••••">
+
+                <small class="error" *ngIf="isInvalid('confirmPassword', 'required')">
+                    Es obligatorio confirmar la contraseña. Escribala por favor.
+                </small>
+
+                <small class="error" *ngIf="isInvalid('confirmPassword', 'confirmPassword')">
+                    Las contraseñas escritas no coinciden. Por favor, vuelvalas a escribir.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Edad:</label>
+
+                <input formControlName="age" id="age" type="number" placeholder="Ej. 18" />
+
+                <small class="error" *ngIf="isInvalid('age', 'required')">
+                La edad es obligatoria.
+                </small>
+
+                <small class="error" *ngIf="isInvalid('age', 'min')">
+                La edad debe ser mayor o igual a 15 años.
+                </small>
+
+                <small class="error" *ngIf="isInvalid('age', 'max')">
+                La edad no puede ser mayor a 90 años.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="check">Sí acepto los terminos y condiciones: 
+                    <input formControlName="check" id="check" type="checkbox"/>
+                </label>                
+
+                <small class="error" *ngIf="isInvalid('check', 'required')">
+                    Si quiere continuar debe aceptar los terminos y condiciones.
+                </small>
+            </div>
+
+            <button
+                type="submit"
+                (click)="onClick()"
+                [disabled]="form.invalid">
+                Registrarse
+            </button>
+        </form>
+    </div>
+
+  </div>
+
+</div>

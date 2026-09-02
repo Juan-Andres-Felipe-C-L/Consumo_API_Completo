@@ -1,0 +1,158 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f4f6f9;
+  padding: 2rem;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 450px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  h2 {
+    margin: 0;
+    color: #222;
+    text-align: center;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #666;
+    margin: 0.5rem 0 2rem;
+    font-size: 0.95rem;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-weight: 600;
+    color: #444;
+  }
+
+  input {
+    padding: 0.85rem 1rem;
+    border: 1px solid #d6d6d6;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #1976d2;
+      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+    }
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+}
+
+button {
+  margin-top: 0.5rem;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  background: #1976d2;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #1565c0;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-weight: 600;
+    color: #444;
+  }
+
+  input {
+    padding: 0.85rem 1rem;
+    border: 1px solid #d6d6d6;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #1976d2;
+      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+    }
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+
+  .error {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    margin-top: 0.15rem;
+  }
+}
+
+button:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  width: 320px;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+
+  h2 {
+    text-align: center;
+    color: #1976d2;
+    margin-top: 0;
+  }
+
+  p {
+    margin: .8rem 0;
+  }
+}
