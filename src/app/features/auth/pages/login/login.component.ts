@@ -6,8 +6,6 @@ import {
   Validators
 } from '@angular/forms';
 
-import { LoginRequest } from '../../models/login-request.model';
-import { LoginResponse } from '../../models/login-response.model';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
@@ -35,7 +33,8 @@ export class LoginComponent {
       ]],
 
       password: ['', [
-        Validators.required
+        Validators.required,
+        Validators.minLength(9)
       ]]
     });
 
