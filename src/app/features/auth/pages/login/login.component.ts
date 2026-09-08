@@ -1,9 +1,14 @@
+
 import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   Validators
-} from '@angular/forms'
+} from '@angular/forms';
+
+import { LoginRequest } from '../../models/login-request.model';
+import { LoginResponse } from '../../models/login-response.model';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +20,13 @@ export class LoginComponent {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  loading = false;
+  errorMessage = '';
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) {
 
     this.form = this.fb.group({
       email: ['', [
@@ -24,8 +35,7 @@ export class LoginComponent {
       ]],
 
       password: ['', [
-        Validators.required,
-        Validators.minLength(9)
+        Validators.required
       ]]
     });
 
@@ -35,33 +45,81 @@ export class LoginComponent {
 
     const control = this.form.get(controlName);
 
-    if (!control) {
-      return false;
-    }
-
-    return control.hasError(errorCode) && control.touched;
+    return !!control &&
+           control.hasError(errorCode) &&
+           control.touched;
   }
 
   onSubmit(): void {
 
-    if (this.form.valid) {
+    this.errorMessage = '';
 
-      const email = this.form.value.email;
-      const password = this.form.value.password;
-
-      console.log('Correo:', email);
-      console.log('Contraseña:', password);
-
-      // Aquí posteriormente puedes realizar
-      // la autenticación contra tu backend.
-
-    } else {
-
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
-
+      return;
     }
+
+    this.loading = true;
+
+    const credentials = {
+      email: this.form.value.email,
+      password: this.form.value.password
+    };
+
+    this.authService.login(credentials).subscribe({
+
+      next: (response) => {
+
+        this.loading = false;
+
+        console.log('Login exitoso:', response);
+
+        // Guardar tokens
+        localStorage.setItem(
+          'accessToken',
+          response.accessToken
+        );
+
+        localStorage.setItem(
+          'refreshToken',
+          response.refreshToken
+        );
+
+        // Guardar información del usuario
+        localStorage.setItem(
+          'user',
+          JSON.stringify(response.user)
+        );
+
+        console.log('Usuario:', response.user);
+
+        // Aquí posteriormente puedes redireccionar
+        // al usuario a la página principal.
+
+      },
+
+      error: (error) => {
+
+        this.loading = false;
+
+        console.error('Error en login:', error);
+
+        if (error.status === 401) {
+
+          this.errorMessage =
+            'El correo o la contraseña son incorrectos.';
+
+        } else {
+
+          this.errorMessage =
+            'No fue posible iniciar sesión. Inténtelo nuevamente.';
+
+        }
+
+      }
+
+    });
 
   }
 
 }
-
