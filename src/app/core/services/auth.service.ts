@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 
 import { LoginRequest } from '../../features/auth/models/login-request.model';
 import { LoginResponse } from '../../features/auth/models/login-response.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private readonly apiUrl = 'https://sla-api.alejogiraldo.dev';
+  private readonly apiUrl = environment.apiUrl
 
   constructor(private http: HttpClient) {}
 

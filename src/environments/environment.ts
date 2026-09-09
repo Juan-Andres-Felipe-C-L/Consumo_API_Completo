@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    apiUrl: '/api'
+    apiUrl: 'https://sla-api.alejogiraldo.dev'
 };
