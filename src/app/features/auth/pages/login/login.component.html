@@ -1,80 +1,92 @@
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<div class="content">
 
-  <div class="form-group">
+  <div class="container">
 
-    <label for="email">
-      Correo electrónico:
-    </label>
+    <div class="card">
 
-    <input
-      formControlName="email"
-      id="email"
-      type="email"
-      placeholder="Ej. usuario@ejemplo.com"
-    />
+      <h2>Inicio de sesión</h2>
 
-    <small
-      class="error"
-      *ngIf="isInvalid('email', 'required')">
-      Debe ingresar un correo electrónico.
-    </small>
+      <p class="subtitle">
+        Ingrese sus credenciales para continuar
+      </p>
 
-    <small
-      class="error"
-      *ngIf="isInvalid('email', 'email')">
-      Ingrese un correo electrónico válido.
-    </small>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+
+          <label for="email">
+            Correo electrónico:
+          </label>
+
+          <input
+            formControlName="email"
+            id="email"
+            type="email"
+            placeholder="Ej. usuario@ejemplo.com" />
+
+          <small
+            class="error"
+            *ngIf="isInvalid('email', 'required')">
+            Debe ingresar un correo electrónico.
+          </small>
+
+          <small
+            class="error"
+            *ngIf="isInvalid('email', 'email')">
+            Ingrese un correo electrónico válido.
+          </small>
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="password">
+            Contraseña:
+          </label>
+
+          <input
+            formControlName="password"
+            id="password"
+            type="password"
+            placeholder="••••••••" />
+
+          <small
+            class="error"
+            *ngIf="isInvalid('password', 'required')">
+            Debe ingresar una contraseña.
+          </small>
+
+          <small
+            class="error"
+            *ngIf="isInvalid('password', 'minlength')">
+            La contraseña debe tener mínimo 8 caracteres.
+          </small>
+
+        </div>
+
+        <!-- Error de la API -->
+
+        <div
+          class="api-error"
+          *ngIf="errorMessage">
+
+          {{ errorMessage }}
+
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="form.invalid || loading">
+
+          {{ loading ? 'Iniciando sesión...' : 'Iniciar sesión' }}
+
+        </button>
+
+      </form>
+
+    </div>
 
   </div>
 
-
-  <div class="form-group">
-
-    <label for="password">
-      Contraseña:
-    </label>
-
-    <input
-      formControlName="password"
-      id="password"
-      type="password"
-      placeholder="••••••••"
-    />
-
-    <small
-      class="error"
-      *ngIf="isInvalid('password', 'required')">
-      Debe ingresar una contraseña.
-    </small>
-
-    <small
-      class="error"
-      *ngIf="isInvalid('password', 'minlength')">
-      La contraseña debe tener mínimo 8 caracteres.
-    </small>
-
-  </div>
-
-
-  <!-- Error de la API -->
-
-  <div
-    class="api-error"
-    *ngIf="errorMessage">
-
-    {{ errorMessage }}
-
-  </div>
-
-
-  <button
-    type="submit"
-    [disabled]="form.invalid || loading">
-
-    {{ loading ? 'Iniciando sesión...' : 'Iniciar sesión' }}
-
-  </button>
-
-</form>
-
+</div>
