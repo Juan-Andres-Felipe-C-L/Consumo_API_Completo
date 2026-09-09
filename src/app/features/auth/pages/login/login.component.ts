@@ -6,6 +6,7 @@ import {
   Validators
 } from '@angular/forms';
 
+import { LoginRequest } from '../../models/login-request.model';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
@@ -49,76 +50,66 @@ export class LoginComponent {
            control.touched;
   }
 
-  onSubmit(): void {
+ onSubmit(): void {
 
-    this.errorMessage = '';
+  this.errorMessage = '';
 
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
+  }
 
-    this.loading = true;
+  this.loading = true;
 
-    const credentials = {
-      email: this.form.value.email,
-      password: this.form.value.password
-    };
+  const credentials: LoginRequest = {
+    email: this.form.value.email,
+    password: this.form.value.password
+  };
 
-    this.authService.login(credentials).subscribe({
+  this.authService.login(credentials).subscribe({
 
-      next: (response) => {
+    next: (response) => {
 
-        this.loading = false;
+      this.loading = false;
 
-        console.log('Login exitoso:', response);
+      console.log('Login exitoso:', response);
 
-        // Guardar tokens
-        localStorage.setItem(
-          'accessToken',
-          response.accessToken
-        );
+      localStorage.setItem(
+        'accessToken',
+        response.accessToken
+      );
 
-        localStorage.setItem(
-          'refreshToken',
-          response.refreshToken
-        );
+      localStorage.setItem(
+        'refreshToken',
+        response.refreshToken
+      );
 
-        // Guardar información del usuario
-        localStorage.setItem(
-          'user',
-          JSON.stringify(response.user)
-        );
+      localStorage.setItem(
+        'user',
+        JSON.stringify(response.user)
+      );
 
-        console.log('Usuario:', response.user);
+      console.log('Usuario:', response.user);
 
-        // Aquí posteriormente puedes redireccionar
-        // al usuario a la página principal.
+    },
 
-      },
+    error: (error) => {
 
-      error: (error) => {
+      this.loading = false;
 
-        this.loading = false;
+      console.error('Error en login:', error);
 
-        console.error('Error en login:', error);
-
-        if (error.status === 401) {
-
-          this.errorMessage =
-            'El correo o la contraseña son incorrectos.';
-
-        } else {
-
-          this.errorMessage =
-            'No fue posible iniciar sesión. Inténtelo nuevamente.';
-
-        }
-
+      if (error.status === 401) {
+        this.errorMessage =
+          'El correo o la contraseña son incorrectos.';
+      } else {
+        this.errorMessage =
+          'No fue posible iniciar sesión. Inténtelo nuevamente.';
       }
 
-    });
+    }
 
-  }
+  });
+}
 
 }

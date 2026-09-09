@@ -19,7 +19,7 @@ export class AuthService {
   login(credentials: LoginRequest): Observable<LoginResponse> {
 
     return this.http.post<LoginResponse>(
-      `${this.apiUrl}/login`,
+      `${this.apiUrl}/api/auth/login`,
       credentials
     );
 
