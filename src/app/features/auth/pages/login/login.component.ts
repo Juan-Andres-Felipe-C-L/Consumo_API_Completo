@@ -8,6 +8,7 @@ import {
 
 import { LoginRequest } from '../../models/login-request.model';
 import { AuthService } from '../../../../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
 
     this.form = this.fb.group({
@@ -46,70 +48,62 @@ export class LoginComponent {
     const control = this.form.get(controlName);
 
     return !!control &&
-           control.hasError(errorCode) &&
-           control.touched;
+      control.hasError(errorCode) &&
+      control.touched;
   }
 
- onSubmit(): void {
+  onSubmit(): void {
 
-  this.errorMessage = '';
+    this.errorMessage = '';
 
-  if (this.form.invalid) {
-    this.form.markAllAsTouched();
-    return;
-  }
-
-  this.loading = true;
-
-  const credentials: LoginRequest = {
-    email: this.form.value.email,
-    password: this.form.value.password
-  };
-
-  this.authService.login(credentials).subscribe({
-
-    next: (response) => {
-
-      this.loading = false;
-
-      console.log('Login exitoso:', response);
-
-      localStorage.setItem(
-        'accessToken',
-        response.accessToken
-      );
-
-      localStorage.setItem(
-        'refreshToken',
-        response.refreshToken
-      );
-
-      localStorage.setItem(
-        'user',
-        JSON.stringify(response.user)
-      );
-
-      console.log('Usuario:', response.user);
-
-    },
-
-    error: (error) => {
-
-      this.loading = false;
-
-      console.error('Error en login:', error);
-
-      if (error.status === 401) {
-        this.errorMessage =
-          'El correo o la contraseña son incorrectos.';
-      } else {
-        this.errorMessage =
-          'No fue posible iniciar sesión. Inténtelo nuevamente.';
-      }
-
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
 
-  });
-}
+    this.loading = true;
+
+    const credentials: LoginRequest = {
+      email: this.form.value.email,
+      password: this.form.value.password
+    };
+
+    this.authService.login(credentials).subscribe({
+
+      next: (response) => {
+
+        this.loading = false;
+
+        this.authService.saveSession(response);
+
+        const role = response.user.role;
+
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin']);
+        } else if (role === 'AGENT') {
+          this.router.navigate(['/agent']);
+        } else if (role === 'USER') {
+          this.router.navigate(['/user']);
+        }
+      },
+
+      error: (error) => {
+
+        this.loading = false;
+
+        console.error('Error en login:', error);
+
+        if (error.status === 401) {
+          this.errorMessage =
+            'El correo o la contraseña son incorrectos.';
+        } else {
+          this.errorMessage =
+            'No fue posible iniciar sesión. Inténtelo nuevamente.';
+        }
+
+      }
+
+    });
+  }
 
 }
