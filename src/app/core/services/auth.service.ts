@@ -14,6 +14,15 @@ import { User } from '../../features/auth/models/user.model';
 export class AuthService {
 
   private readonly apiUrl = environment.apiUrl;
+  private readonly dashboards: Record<string, string> = {
+    ADMIN: '/admin',
+    AGENT: '/agent',
+    CLIENT: '/client'
+  };
+
+  getDashboardRoute(role: string | null = this.getRole()): string {
+    return (role && this.dashboards[role.toUpperCase()]) || '/login';
+  }
 
   constructor(private http: HttpClient) { }
 

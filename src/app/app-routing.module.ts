@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/pages/login/login.component';
 import { AdminComponent } from './features/admin/pages/admin/admin.component';
 import { AgentComponent } from './features/agent/pages/agent/agent.component';
-import { UserComponent } from './features/user/pages/user/user.component';
+import { ClientComponent } from './features/client/pages/client/client.component';
 
 import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
@@ -25,7 +25,7 @@ const routes: Routes = [
     }
   },
 
-  {
+ {
     path: 'agent',
     component: AgentComponent,
     canActivate: [authGuard, roleGuard],
@@ -35,11 +35,11 @@ const routes: Routes = [
   },
 
   {
-    path: 'user',
-    component: UserComponent,
+    path: 'client',
+    component: ClientComponent,
     canActivate: [authGuard, roleGuard],
     data: {
-      role: 'USER'
+      role: 'CLIENT'
     }
   },
 
@@ -47,7 +47,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
-  }
+  },
+
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login' }
 
 ];
 

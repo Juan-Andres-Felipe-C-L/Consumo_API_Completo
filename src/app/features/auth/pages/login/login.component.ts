@@ -71,20 +71,11 @@ export class LoginComponent {
     this.authService.login(credentials).subscribe({
 
       next: (response) => {
-
         this.loading = false;
-
         this.authService.saveSession(response);
-
-        const role = response.user.role;
-
-        if (role === 'ADMIN') {
-          this.router.navigate(['/admin']);
-        } else if (role === 'AGENT') {
-          this.router.navigate(['/agent']);
-        } else if (role === 'USER') {
-          this.router.navigate(['/user']);
-        }
+        this.router.navigateByUrl(
+          this.authService.getDashboardRoute(response.user.role)
+        );
       },
 
       error: (error) => {
